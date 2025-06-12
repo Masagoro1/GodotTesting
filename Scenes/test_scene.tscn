@@ -1,0 +1,109 @@
+[gd_scene load_steps=16 format=3 uid="uid://8dntcgcowdr8"]
+
+[ext_resource type="Script" path="res://Scripts/GameManager.gd" id="1_e3c7g"]
+[ext_resource type="Script" path="res://Scripts/Player_Controller.gd" id="1_lsuf0"]
+[ext_resource type="Script" path="res://Scripts/Player_Controller_2D.gd" id="3_6owbq"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_nntfe"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_asclq"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fu6f5"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_d1fid"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_col5k"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_d1fid")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_er3wq"]
+albedo_color = Color(0.369883, 0.753005, 0.388703, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_2hphh"]
+material = SubResource("StandardMaterial3D_er3wq")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8512a"]
+size = Vector3(1, 0.001, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qgli6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jotpo"]
+size = Vector3(28.0087, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ddy4d"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_iomb5"]
+
+[node name="TestScene" type="Node3D"]
+script = ExtResource("1_e3c7g")
+
+[node name="Player3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10849, 0.428749)
+script = ExtResource("1_lsuf0")
+
+[node name="PlayerBody" type="MeshInstance3D" parent="Player3D"]
+mesh = SubResource("CapsuleMesh_nntfe")
+
+[node name="PlayerView" type="Camera3D" parent="Player3D/PlayerBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.518719, -0.561556)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player3D"]
+shape = SubResource("CapsuleShape3D_asclq")
+
+[node name="Screen" type="MeshInstance3D" parent="."]
+transform = Transform3D(-2, -3.01992e-07, 1.32005e-14, 0, -8.74228e-08, -2, 3.01992e-07, -2, 8.74228e-08, 0, 2.19413, 9.0021)
+mesh = SubResource("PlaneMesh_fu6f5")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_col5k")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+render_target_update_mode = 4
+
+[node name="ScreenCamera2D" type="Camera3D" parent="SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.939916, -0.891807)
+projection = 1
+size = 10.0
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(12, 0, 0, 0, 12, 0, 0, 0, 12, 0, 0, 0)
+
+[node name="Floor" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("PlaneMesh_2hphh")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("BoxShape3D_8512a")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.54003, 0)
+light_energy = 10.0
+light_volumetric_fog_energy = 0.0
+omni_range = 100.0
+
+[node name="Floor2D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.463, -12.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor2D"]
+transform = Transform3D(28, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_qgli6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor2D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00543213, 0, 0)
+shape = SubResource("BoxShape3D_jotpo")
+
+[node name="Player2D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.779, -12.5)
+script = ExtResource("3_6owbq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player2D"]
+shape = SubResource("BoxShape3D_ddy4d")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player2D"]
+mesh = SubResource("BoxMesh_iomb5")
+
+[node name="Camera2D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.11995, -0.892)
+projection = 1
+size = 10.0
